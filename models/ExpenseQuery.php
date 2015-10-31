@@ -41,7 +41,7 @@ class ExpenseQuery extends Expense
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
+    {        
         $query = Expense::find();
 
         $dataProvider = new ActiveDataProvider([
