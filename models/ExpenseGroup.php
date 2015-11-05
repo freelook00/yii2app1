@@ -46,4 +46,9 @@ class ExpenseGroup extends \yii\db\ActiveRecord
     {
         return new ExpenseGroupQuery(get_called_class());
     }
+
+    public static function getGroups()
+    {
+        
+    }
 }
