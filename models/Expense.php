@@ -55,7 +55,7 @@ class Expense extends \yii\db\ActiveRecord
     {
         $groups = new ExpenseGroup();
 
-        //$this->getDb() ( $groups->tableName() );
+        return $groups->find()->all();
     }
 
     /**

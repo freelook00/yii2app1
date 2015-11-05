@@ -41,4 +41,9 @@ class ExpenseGroup extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    public static function find()
+    {
+        return new ExpenseGroupQuery(get_called_class());
+    }
 }
