@@ -27,3 +27,7 @@ phpunit.phar
 /phpunit.xml
 
 /config/db.php
+/logs/*
+/logs
+
+
