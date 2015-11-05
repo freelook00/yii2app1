@@ -29,9 +29,10 @@ class Expense extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date', 'total', 'comment'], 'required'],
+            [['date', 'total', 'group', 'comment'], 'required'],
             [['date'], 'safe'],
             [['total'], 'number'],
+            [['group'], 'number'],
             [['comment'], 'string']
         ];
     }
@@ -45,10 +46,17 @@ class Expense extends \yii\db\ActiveRecord
             'id' => 'ID',
             'date' => 'Date',
             'total' => 'Total',
+            'group' => 'Group',
             'comment' => 'Comment',
         ];
     }
 
+    public function getGroups()
+    {
+        $groups = new ExpenseGroup();
+
+        //$this->getDb() ( $groups->tableName() );
+    }
 
     /**
      *
