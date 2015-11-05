@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use app\models\Expense;
 use yii\web\Request;
+use yii\bootstrap\ActiveForm;
 
 class ExpensesController extends \yii\web\Controller
 {
@@ -15,28 +16,37 @@ class ExpensesController extends \yii\web\Controller
         return $this->render('delete');
     }
 
-    public function actionTotal()
+    public function actionReport()
     {
         $q = Expense::find();
 
         $req = BaseYii::$app->request;
         $get = $req->get();
 
-        if( isset( $get['year'] ) )
+        if( !isset( $get['year'] ) AND !isset( $get['month'] ) )
         {
-            if (isset( $get['month'] ) )
-            {
-                $btwFrom = $get['year'].'-'.$get['month'].'-01';
-                $btwTo   = $get['year'].'-'.$get['month'].'-'.date('t', strtotime($btwFrom) );
-
-                $q->select(['group', 'SUM(`total`) as `total`']);
-                $q->where( ['between', 'date', $btwFrom, $btwTo] );
-                $q->groupBy('group');
-                $q->orderBy('group');
-
-                //SELECT `group`, SUM(`total`) as 'total' FROM `expense` WHERE `date` BETWEEN '2015-01-01' AND '2015-01-30' GROUP BY `group`
-            }
+            $year  = date('Y');
+            $month = date('m');
         }
+        else
+        {
+            $year  = $get['year'];
+            $month = $get['month'];
+        }
+
+        $activePeriod = array( 'year' => $year, 'month' => $month );
+
+        $btwFrom = $year.'-'.$month.'-01';
+        $btwTo   = $year.'-'.$month.'-'.date('t', strtotime($btwFrom) );
+
+
+        $q->select(['group', 'SUM(`total`) as `total`']);
+        $q->where( ['between', 'date', $btwFrom, $btwTo] );
+        $q->groupBy('group');
+        $q->orderBy('group');
+
+            //SELECT `group`, SUM(`total`) as 'total' FROM `expense` WHERE `date` BETWEEN '2015-01-01' AND '2015-01-30' GROUP BY `group`
+
 
         $dataProvider = new ActiveDataProvider(
             [
@@ -47,12 +57,14 @@ class ExpensesController extends \yii\web\Controller
             ]
         );
 
-        return $this->render('index', [ 'expenses' => $dataProvider, 'selectType' => 'total' ]);
+        return $this->render('report', [ 'expenses' => $dataProvider, 'activePeriod' => $activePeriod ]);
     }
 
     public function actionIndex()
     {
-        $q = Expense::find();
+        $model = new Expense();
+
+        $q = $model->find();
 
         $req = BaseYii::$app->request;
         $get = $req->get();
@@ -77,12 +89,14 @@ class ExpensesController extends \yii\web\Controller
              ]
         );
 
-        return $this->render('index', [ 'expenses' => $dataProvider, 'selectType' => 'list']);
+        return $this->render('index', [ 'expenses' => $dataProvider, 'selectType' => 'list', 'xgroups' => $model->getGroups()]);
     }
 
     public function actionNew()
     {
-        return $this->render('new');
+        $model = new Expense();
+
+        return $this->render('new', [ 'model' => $model ]);
     }
 
     public function actionSave()

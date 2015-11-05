@@ -50,6 +50,7 @@ $config = [
 	],
     ],
     'params' => $params,
+    'defaultRoute' => 'expenses/index',
 ];
 
 if (YII_ENV_DEV) {
