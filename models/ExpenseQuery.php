@@ -14,4 +14,6 @@ class ExpenseQuery extends ActiveQuery
         return 'expense';
     }
 
+
+
 }

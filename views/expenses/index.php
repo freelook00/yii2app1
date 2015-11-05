@@ -27,7 +27,12 @@ $columns = [
                 'style' => 'text-align: right;',
             ],
     ],
-    'group:text:Группа расходов',
+    [
+        'class' => DataColumn::className(),
+        'attribute' => 'group',
+        'format' => 'text',
+        'label' => 'Группа расходов',
+    ],
     'comment:text:Примечание',
 ];
 
@@ -38,6 +43,23 @@ $columns = [
         [
             'label' => 'Добавить',
             'url' => ['expenses/new'],
+        ],
+        [
+            'label' => 'Период ('.$activePeriod['year'].' '.$activePeriod['month'].')',
+            'items' => [
+                ['label' => 'Текущий '.date('F').' - '.date('Y'), 'url' => '?year='.date('Y').'&month='.date('m')],
+                '<li class="divider"></li>',
+                '<li class="dropdown-header">Другие Периоды</li>',
+                [
+                    'label' => 'Прошлый месяц - '.date('F Y', strtotime("-1 month") ).'',
+                    'url' => '?year='.date('Y', strtotime("-1 month")).'&month='.date('m', strtotime("-1 month"))
+                ],
+                [
+                    'label' => 'Позапрошлый месяц - '.date('F Y', strtotime("-2 month") ).'',
+                    'url' => '?year='.date('Y', strtotime("-2 month")).'&month='.date('m', strtotime("-2 month"))
+                ],
+
+            ],
         ],
     ],
     'options' => ['class' =>'nav-pills'], // set this to nav-tab to get tab-styled navigation
@@ -51,4 +73,4 @@ $columns = [
 ]) ?>
 
 
-<?= var_export($xgroups, true) ?>
+<?/* var_export($activePeriod, true) ?>

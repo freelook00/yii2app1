@@ -32,6 +32,21 @@ class ExpenseGroup extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public static function primaryKey()
+    {
+        return ['id'];
+    }
+
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+
+    /**
      * @inheritdoc
      */
     public function attributeLabels()
@@ -42,10 +57,10 @@ class ExpenseGroup extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function find()
+    /*public static function find()
     {
         return new ExpenseGroupQuery(get_called_class());
-    }
+    }*/
 
     public static function getGroups()
     {

@@ -14,4 +14,6 @@ class ExpenseGroupQuery extends ActiveQuery
         return 'expensegroups';
     }
 
+
+
 }

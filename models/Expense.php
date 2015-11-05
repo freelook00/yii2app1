@@ -15,6 +15,13 @@ use yii\db\ActiveQuery;
  */
 class Expense extends \yii\db\ActiveRecord
 {
+
+    public static function primaryKey()
+    {
+        return ['id'];
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -32,9 +39,17 @@ class Expense extends \yii\db\ActiveRecord
             [['date', 'total', 'group', 'comment'], 'required'],
             [['date'], 'safe'],
             [['total'], 'number'],
-            [['group'], 'number'],
+            [['group_id'], 'number'],
             [['comment'], 'string']
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getGroup()
+    {
+        return $this->hasOne(ExpenseGroup::className(), ['id'=>'group_id'])->one()->name;
     }
 
     /**
@@ -46,7 +61,7 @@ class Expense extends \yii\db\ActiveRecord
             'id' => 'ID',
             'date' => 'Date',
             'total' => 'Total',
-            'group' => 'Group',
+            'group_id' => 'Group',
             'comment' => 'Comment',
         ];
     }
@@ -55,7 +70,7 @@ class Expense extends \yii\db\ActiveRecord
     {
         $groups = new ExpenseGroup();
 
-        return $groups->find()->all();
+        return $groups->find()->asArray(true)->all();
     }
 
     /**

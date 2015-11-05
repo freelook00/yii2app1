@@ -14,7 +14,9 @@ $form = ActiveForm::begin(
 ?>
 <?= $form->field($model, 'date'); ?>
 <?= $form->field($model, 'total'); ?>
-<?= $form->field($model, 'group')->dropDownList($model->getGroups() ); ?>
+<?= $form->field($model, 'group_id')->dropDownList($model->getGroups() ); ?>
 <?= $form->field($model, 'comment'); ?>
 <?php ActiveForm::end(); ?>
+
+<?= var_export($model->getGroups(), true); ?>
 
