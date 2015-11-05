@@ -1,37 +1,57 @@
 <?php
-
-use yii\helpers\Html;
-use yii\grid\GridView;
-
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ExpenseQuery */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Expenses';
-$this->params['breadcrumbs'][] = $this->title;
+use yii\grid\GridView;
+use yii\grid\DataColumn;
+use yii\i18n\Formatter;
 ?>
-<div class="expense-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<?php
 
-    <p>
-        <?= Html::a('Create Expense', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'date',
-            'total',
-            'comment:ntext',
-
-            ['class' => 'yii\grid\ActionColumn'],
+if($selectType == 'list')
+{
+    $columns = [
+        'id',
+        [
+            'class' => DataColumn::className(),
+            'attribute' => 'date',
+            'format' => ['date', 'php:d.m.Y'],
+            'label' => 'Дата',
         ],
-    ]); ?>
 
-</div>
+        [
+            'class' => DataColumn::className(),
+            'attribute' => 'total',
+            'format' => ['decimal', '2' ],
+            'label' => 'Сумма',
+            'contentOptions' =>
+                [
+                    'style' => 'text-align: right;',
+                ],
+        ],
+        'group:text:Группа расходов',
+        'comment:text:Примечание',
+    ];
+
+}
+elseif($selectType == 'total')
+{
+    $columns = [
+        [
+            'class' => DataColumn::className(),
+            'attribute' => 'total',
+            'format' => ['decimal', '2' ],
+            'label' => 'Сумма',
+            'contentOptions' =>
+                [
+                    'style' => 'text-align: right;',
+                ],
+        ],
+        'group:text:Группа расходов'
+    ];
+}
+?>
+
+<?= GridView::widget([
+    'dataProvider' => $expenses,
+    'columns' => $columns,
+]) ?>

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "expense".
@@ -48,9 +49,9 @@ class Expense extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
-     * @inheritdoc
-     * @return ExpenseQuery the active query used by this AR class.
+     *
      */
     public static function find()
     {
