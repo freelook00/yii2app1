@@ -25,8 +25,6 @@ $columns = [
     'group:text:Группа расходов'
 ];
 
-$navWg = yii\bootstrap\Nav::begin();
-
 $form = yii\bootstrap\ActiveForm::begin(['layout' => 'inline', 'method' => 'get', 'action' => ['expenses/report']]);
 ?>
 
@@ -52,9 +50,7 @@ $form = yii\bootstrap\ActiveForm::begin(['layout' => 'inline', 'method' => 'get'
 
 <?= yii\helpers\Html::submitButton(Yii::t('app', 'Отправить'), ['class' => 'btn btn-primary']) ?>
 
-
 <?php yii\bootstrap\ActiveForm::end(); ?>
-<?php yii\bootstrap\Nav::end(); ?>
 
 <?= GridView::widget([
     'dataProvider' => $expenses,

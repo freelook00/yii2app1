@@ -27,11 +27,17 @@ class ExpensesController extends \yii\web\Controller
         $req = BaseYii::$app->request;
         $get = $req->get();
 
+        $rrange = new ReportRange();
+
         if( isset($get['ReportRange']) )
         {
-            $rrange = new ReportRange();
             $rrange->dateStart = strtotime($get['ReportRange']['dateStart']);
-            $rrange->dateEnd = strtotime($get['ReportRange']['dateEnd']);
+            $rrange->dateEnd   = strtotime($get['ReportRange']['dateEnd']  );
+        }
+        else
+        {
+            $rrange->dateStart = strtotime( date('Y-m-01') );
+            $rrange->dateEnd   = strtotime( date('Y-m-').date('t') );
         }
 
         if( $rrange->dateEnd === false OR $rrange->dateEnd < $rrange->dateStart)
