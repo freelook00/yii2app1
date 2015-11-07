@@ -119,7 +119,13 @@ class ExpensesController extends \yii\web\Controller
 
     public function actionSave()
     {
-        return $this->render('save');
+        $model = new Expense(BaseYii::$app->request->post()['Expense']);
+
+        $model->date = date('Y-m-d' ,strtotime(BaseYii::$app->request->post()['Expense']['date']));
+
+        $model->save();
+
+        return $this->render('save', [ 'model' => $model ]);
     }
 
     public function actionView()

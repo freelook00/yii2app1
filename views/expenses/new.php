@@ -1,22 +1,48 @@
 <?php
 /* @var $this yii\web\View */
-use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\ExpenseGroup;
+use yii\helpers\Html;
 ?>
 
 <?php
-
-$form = ActiveForm::begin(
-    [
-        'action' => ['expenses/save'],
-
-    ]
-)
+$form = yii\bootstrap\ActiveForm::begin(['action' => ['expenses/save'], 'options' => [], ] )
 ?>
-<?= $form->field($model, 'date'); ?>
-<?= $form->field($model, 'total'); ?>
-<?= $form->field($model, 'group_id')->dropDownList($model->getGroups() ); ?>
-<?= $form->field($model, 'comment'); ?>
-<?php ActiveForm::end(); ?>
+<div class="row">
+    <div class="col-xs-4">
+        <?= $form->field($model, 'date'     )->widget(
+                \yii\widgets\MaskedInput::className(), [
+                    'clientOptions' => [
+                        'alias' => 'date',
+                        'mask' => 'd.m.y'
+                    ],
+                ]
+            )->label('Дата'); ?>
+    </div>
+    <div class="col-xs-4">
+        <?= $form->field($model, 'total'    )->widget(\yii\widgets\MaskedInput::className(), [
+                'clientOptions' =>
+                    [
+                        'alias' => 'decimal',
+                        'groupSeparator' => ' ',
+                        //'radixPoint' => ',',
+                        'autoGroup' => true
+                    ],
+                //'mask' => '[99999]9[.99]',
+                ])->label('Сумма'); ?>
+    </div>
+    <div class="col-xs-4">
+        <?= $form->field($model, 'group_id' )->dropDownList( ArrayHelper::map(ExpenseGroup::find()->all(), 'id', 'name') )->label('Статья расходов'); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <?= $form->field($model, 'comment'  )->label('Описание'); ?>
 
-<?= var_export($model->getGroups(), true); ?>
+        <?= Html::submitButton(Yii::t('app', 'Отправить'), ['class' => 'btn btn-primary']) ?>
+    </div>
+</div>
+
+<?php yii\bootstrap\ActiveForm::end(); ?>
+
 
