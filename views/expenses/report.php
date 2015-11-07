@@ -4,6 +4,9 @@ use yii\grid\GridView;
 use yii\grid\DataColumn;
 use yii\i18n\Formatter;
 use yii\bootstrap\Nav;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+
 ?>
 
 <?php
@@ -22,33 +25,39 @@ $columns = [
     'group:text:Группа расходов'
 ];
 
+$navWg = yii\bootstrap\Nav::begin();
+
+$form = yii\bootstrap\ActiveForm::begin(['layout' => 'inline', 'method' => 'get', 'action' => ['expenses/report']]);
 ?>
 
-<?=
+<?= $form->field($ReportRange, 'dateStart')->widget(
+    \yii\jui\DatePicker::className(), [
+        'dateFormat' => 'yyyy-MM-dd',
+        'language' => 'russian',
+        'options' => [
+            'class' => 'form-control ',
+        ],
+    ]
+)->label('От'); ?>
 
-    /*Button::widget([
-        'label' => 'Action',
-        'options' => ['class' => 'btn-primary'], // produces class "btn btn-primary"
-    ]);*/
+<?= $form->field($ReportRange, 'dateEnd')->widget(
+    \yii\jui\DatePicker::className(), [
+        'dateFormat' => 'yyyy-MM-dd',
+        'language' => 'russian',
+        'options' => [
+            'class' => 'form-control'
+        ]
+    ]
+)->label('По'); ?>
 
-Nav::widget([
-    /*'items' => [
-          [
-              'label' => 'Добавить',
-              'url' => ['expense/new'],
-          ],
-     ],*/
-     'options' => ['class' =>'nav-pills'], // set this to nav-tab to get tab-styled navigation
-]);
+<?= yii\helpers\Html::submitButton(Yii::t('app', 'Отправить'), ['class' => 'btn btn-primary']) ?>
 
-?>
+
+<?php yii\bootstrap\ActiveForm::end(); ?>
+<?php yii\bootstrap\Nav::end(); ?>
 
 <?= GridView::widget([
     'dataProvider' => $expenses,
     'columns' => $columns,
 ]) ?>
 
-
-<?
-//var_export($activePeriod, true)
-?>

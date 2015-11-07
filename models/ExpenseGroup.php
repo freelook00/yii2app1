@@ -26,6 +26,7 @@ class ExpenseGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['id'], 'required'],
             [['name'], 'required'],
             [['name'], 'string', 'max' => 254]
         ];

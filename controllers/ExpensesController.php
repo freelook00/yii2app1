@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\ExpenseGroup;
+use app\models\ReportRange;
 use yii\BaseYii;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
@@ -19,32 +20,33 @@ class ExpensesController extends \yii\web\Controller
 
     public function actionReport()
     {
-        $q = Expense::find();
+        $model = new Expense();
+
+        $q = $model->find();
 
         $req = BaseYii::$app->request;
         $get = $req->get();
 
-        if( !isset( $get['year'] ) AND !isset( $get['month'] ) )
+        if( isset($get['ReportRange']) )
         {
-            $year  = date('Y');
-            $month = date('m');
-        }
-        else
-        {
-            $year  = $get['year'];
-            $month = $get['month'];
+            $rrange = new ReportRange();
+            $rrange->dateStart = strtotime($get['ReportRange']['dateStart']);
+            $rrange->dateEnd = strtotime($get['ReportRange']['dateEnd']);
         }
 
-        $activePeriod = array( 'year' => $year, 'month' => $month );
+        if( $rrange->dateEnd === false OR $rrange->dateEnd < $rrange->dateStart)
+        {
+            $rrange->dateEnd = time();
+        }
 
-        $btwFrom = $year.'-'.$month.'-01';
-        $btwTo   = $year.'-'.$month.'-'.date('t', strtotime($btwFrom) );
+        $btwFrom = date('Y-m-d', $rrange->dateStart);
+        $btwTo   = date('Y-m-d', $rrange->dateEnd);
 
 
-        $q->select(['tgroup', 'SUM(`total`) as `total`']);
+        $q->select(['group_id', 'SUM(`total`) as `total`']);
         $q->where( ['between', 'date', $btwFrom, $btwTo] );
-        $q->groupBy('tgroup');
-        $q->orderBy('tgroup');
+        $q->groupBy('group_id');
+        $q->orderBy('group_id');
 
             //SELECT `group`, SUM(`total`) as 'total' FROM `expense` WHERE `date` BETWEEN '2015-01-01' AND '2015-01-30' GROUP BY `group`
 
@@ -60,7 +62,9 @@ class ExpensesController extends \yii\web\Controller
 
         return $this->render('report', [
             'expenses' => $dataProvider,
-            'activePeriod' => $activePeriod,
+            'model' => $model,
+            'ReportRange' => $rrange,
+                'exp' => $get,
             ]
         );
     }
