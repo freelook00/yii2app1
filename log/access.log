@@ -1,0 +1,2 @@
+192.168.231.1 - - [10/Nov/2015:16:09:14 +0300] "GET / HTTP/1.1" 500 94725 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/600.1.17 (KHTML, like Gecko) Version/6.2 Safari/537.85.10"
+192.168.231.1 - - [10/Nov/2015:16:09:15 +0300] "GET /favicon.ico HTTP/1.1" 304 180 "http://www.yii3.local/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/600.1.17 (KHTML, like Gecko) Version/6.2 Safari/537.85.10"
